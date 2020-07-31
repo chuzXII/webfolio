@@ -66,7 +66,10 @@ echo "<img src='foto_profil/$data[foto_profil]' width='500px' height='500px' cla
 </div>
 </div>
 <div class="col-lg-9">
+ 
 			<?php
+			
+
  			$sql = mysql_query("SELECT * FROM image JOIN user USING(id_user) WHERE username='$_GET[username]' && image.status='sudah_vertifikasi' order by id_image DESC");
 			if (mysql_num_rows($sql)==0)
 			{
@@ -75,6 +78,8 @@ echo "<img src='foto_profil/$data[foto_profil]' width='500px' height='500px' cla
 			else
 			{
 			while($data = mysql_fetch_array($sql)){
+				
+				if (isset($_SESSION['username'])=="$data[id_user]" && $_SESSION['username']=="$data[username]"){
 						echo'<div class="custom-column-5" id='. $data['kategori_file'] .'>
 							<div class="be-post">
 							
@@ -93,9 +98,34 @@ echo "<img src='foto_profil/$data[foto_profil]' width='500px' height='500px' cla
 								
 							</div>
 							
-							';}				
-			}
+							';}
+				else{
+					echo'<div class="custom-column-5" id='. $data['kategori_file'] .'>
+							<div class="be-post">
+							
+								<a href="gambar.php?id='. $data["id_image"] .'" class="be-img-block">
+								<img src="'. $data[file] .'" alt="">
+								</a>
+								<a href="gambar.php?id='. $data["id_image"] .'" class="be-post-title">' . $data[nama_file] . '</a>
+								<span>
+									<a class="be-post-tag">'. $data[jurusan] .'</a>
+								</span>
+								<div class="author-post">
+									<hr><span class="text-center">'. $data[tgl_upload] .'</span>
+								</div>
+								
+								</div>
+								
+							</div>
+							
+							';}
+				}
+
+				}				
+			
+			
 			?>
+
 </div>
 
 <div id="myModal" class="modal fade" role="dialog">
